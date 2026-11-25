@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.ScriptCharacterMapper">
+
+    <select id="selectById" resultType="ScriptCharacter">
+        SELECT *
+        FROM script_character
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByScriptId" resultType="ScriptCharacter">
+        SELECT *
+        FROM script_character
+        WHERE script_id = #{scriptId}
+        ORDER BY sort_order ASC, id ASC
+    </select>
+
+    <select id="selectByIds" resultType="ScriptCharacter">
+        SELECT *
+        FROM script_character
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="countByScriptId" resultType="long">
+        SELECT COUNT(*)
+        FROM script_character
+        WHERE script_id = #{scriptId}
+    </select>
+
+    <insert id="insert" parameterType="ScriptCharacter" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_character (script_id, character_name, description, character_goal,
+                                      is_hidden, sort_order)
+        VALUES (#{scriptId}, #{characterName}, #{description}, #{characterGoal},
+                #{isHidden}, #{sortOrder})
+    </insert>
+
+    <update id="updateById" parameterType="ScriptCharacter">
+        UPDATE script_character
+        SET character_name = #{characterName},
+            description    = #{description},
+            character_goal = #{characterGoal},
+            is_hidden      = #{isHidden},
+            sort_order     = #{sortOrder}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE
+        FROM script_character
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

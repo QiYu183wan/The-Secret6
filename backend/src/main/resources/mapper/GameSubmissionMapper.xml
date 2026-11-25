@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.GameSubmissionMapper">
+
+    <select id="selectLatestByRoomAndUser" resultType="GameSubmission">
+        SELECT *
+        FROM game_submission
+        WHERE room_id = #{roomId}
+          AND user_id = #{userId}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectByRoom" resultType="GameSubmission">
+        SELECT *
+        FROM game_submission
+        WHERE room_id = #{roomId}
+    </select>
+
+    <select id="countByRoom" resultType="long">
+        SELECT COUNT(*)
+        FROM game_submission
+        WHERE room_id = #{roomId}
+    </select>
+
+    <select id="countByRoomAndUser" resultType="long">
+        SELECT COUNT(*)
+        FROM game_submission
+        WHERE room_id = #{roomId}
+          AND user_id = #{userId}
+    </select>
+
+    <insert id="insert" parameterType="GameSubmission" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO game_submission (room_id, user_id, character_answer, time_answer, location_answer,
+                                     action_answer, explanation, submit_time, score, score_detail,
+                                     submission_order)
+        VALUES (#{roomId}, #{userId}, #{characterAnswer}, #{timeAnswer}, #{locationAnswer},
+                #{actionAnswer}, #{explanation}, #{submitTime}, #{score}, #{scoreDetail},
+                #{submissionOrder})
+    </insert>
+
+    <update id="updateById" parameterType="GameSubmission">
+        UPDATE game_submission
+        SET character_answer = #{characterAnswer},
+            time_answer      = #{timeAnswer},
+            location_answer  = #{locationAnswer},
+            action_answer    = #{actionAnswer},
+            explanation      = #{explanation},
+            submit_time      = #{submitTime},
+            score            = #{score},
+            score_detail     = #{scoreDetail},
+            submission_order = #{submissionOrder}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

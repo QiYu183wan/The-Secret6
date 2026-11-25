@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.SubmissionClueMapper">
+
+    <select id="selectBySubmissionId" resultType="SubmissionClue">
+        SELECT *
+        FROM submission_clue
+        WHERE submission_id = #{submissionId}
+    </select>
+
+    <insert id="insert" parameterType="SubmissionClue" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO submission_clue (submission_id, clue_id, relation_type)
+        VALUES (#{submissionId}, #{clueId}, #{relationType})
+    </insert>
+
+</mapper>

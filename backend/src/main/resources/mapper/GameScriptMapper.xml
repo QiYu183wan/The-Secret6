@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.GameScriptMapper">
+
+    <select id="selectById" resultType="GameScript">
+        SELECT *
+        FROM game_script
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByIds" resultType="GameScript">
+        SELECT *
+        FROM game_script
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectPublished" resultType="GameScript">
+        SELECT *
+        FROM game_script
+        WHERE status = 'PUBLISHED'
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectAllOrderByIdDesc" resultType="GameScript">
+        SELECT *
+        FROM game_script
+        ORDER BY id DESC
+    </select>
+
+    <insert id="insert" parameterType="GameScript" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO game_script (title, description, story, difficulty, min_players, max_players,
+                                 required_players, estimated_minutes, status, cover_image)
+        VALUES (#{title}, #{description}, #{story}, #{difficulty}, #{minPlayers}, #{maxPlayers},
+                #{requiredPlayers}, #{estimatedMinutes}, #{status}, #{coverImage})
+    </insert>
+
+    <update id="updateById" parameterType="GameScript">
+        UPDATE game_script
+        SET title             = #{title},
+            description       = #{description},
+            story             = #{story},
+            difficulty        = #{difficulty},
+            min_players       = #{minPlayers},
+            max_players       = #{maxPlayers},
+            required_players  = #{requiredPlayers},
+            estimated_minutes = #{estimatedMinutes},
+            status            = #{status},
+            cover_image       = #{coverImage}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE
+        FROM game_script
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

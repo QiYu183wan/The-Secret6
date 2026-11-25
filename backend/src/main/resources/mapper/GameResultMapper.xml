@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.GameResultMapper">
+
+    <select id="selectByRoomAndUser" resultType="GameResult">
+        SELECT *
+        FROM game_result
+        WHERE room_id = #{roomId}
+          AND user_id = #{userId}
+        LIMIT 1
+    </select>
+
+    <select id="selectByRoom" resultType="GameResult">
+        SELECT *
+        FROM game_result
+        WHERE room_id = #{roomId}
+    </select>
+
+    <select id="selectByRoomIds" resultType="GameResult">
+        SELECT *
+        FROM game_result
+        WHERE room_id IN
+        <foreach collection="roomIds" item="roomId" open="(" separator="," close=")">
+            #{roomId}
+        </foreach>
+    </select>
+
+    <select id="selectByUserRecent" resultType="GameResult">
+        SELECT *
+        FROM game_result
+        WHERE user_id = #{userId}
+        ORDER BY create_time DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="countByRoomAndUser" resultType="long">
+        SELECT COUNT(*)
+        FROM game_result
+        WHERE room_id = #{roomId}
+          AND user_id = #{userId}
+    </select>
+
+    <insert id="insert" parameterType="GameResult" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO game_result (room_id, user_id, character_id, final_answer, score, score_detail,
+                                 result, hidden_goal)
+        VALUES (#{roomId}, #{userId}, #{characterId}, #{finalAnswer}, #{score}, #{scoreDetail},
+                #{result}, #{hiddenGoal})
+    </insert>
+
+</mapper>

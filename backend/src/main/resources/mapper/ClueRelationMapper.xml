@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.ClueRelationMapper">
+
+    <select id="selectById" resultType="ClueRelation">
+        SELECT *
+        FROM clue_relation
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByScriptId" resultType="ClueRelation">
+        SELECT *
+        FROM clue_relation
+        WHERE script_id = #{scriptId}
+        ORDER BY clue_id ASC, id ASC
+    </select>
+
+    <insert id="insert" parameterType="ClueRelation" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO clue_relation (script_id, clue_id, answer_field, relation_type, score)
+        VALUES (#{scriptId}, #{clueId}, #{answerField}, #{relationType}, #{score})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE
+        FROM clue_relation
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

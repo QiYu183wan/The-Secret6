@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.RoomPlayerMapper">
+
+    <select id="selectByRoomId" resultType="RoomPlayer">
+        SELECT *
+        FROM room_player
+        WHERE room_id = #{roomId}
+        ORDER BY id ASC
+    </select>
+
+    <select id="selectByRoomIds" resultType="RoomPlayer">
+        SELECT *
+        FROM room_player
+        WHERE room_id IN
+        <foreach collection="roomIds" item="roomId" open="(" separator="," close=")">
+            #{roomId}
+        </foreach>
+    </select>
+
+    <select id="selectByRoomAndUser" resultType="RoomPlayer">
+        SELECT *
+        FROM room_player
+        WHERE room_id = #{roomId}
+          AND user_id = #{userId}
+        LIMIT 1
+    </select>
+
+    <select id="countByRoomId" resultType="long">
+        SELECT COUNT(*)
+        FROM room_player
+        WHERE room_id = #{roomId}
+    </select>
+
+    <insert id="insert" parameterType="RoomPlayer" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO room_player (room_id, user_id, character_id, status)
+        VALUES (#{roomId}, #{userId}, #{characterId}, #{status})
+    </insert>
+
+</mapper>

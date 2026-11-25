@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.ScriptAnswerMapper">
+
+    <select id="selectByScriptId" resultType="ScriptAnswer">
+        SELECT *
+        FROM script_answer
+        WHERE script_id = #{scriptId}
+        LIMIT 1
+    </select>
+
+    <select id="countByScriptId" resultType="long">
+        SELECT COUNT(*)
+        FROM script_answer
+        WHERE script_id = #{scriptId}
+    </select>
+
+    <insert id="insert" parameterType="ScriptAnswer" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_answer (script_id, character_answer, time_answer, location_answer,
+                                   action_answer, scoring_rule_json)
+        VALUES (#{scriptId}, #{characterAnswer}, #{timeAnswer}, #{locationAnswer},
+                #{actionAnswer}, #{scoringRuleJson})
+    </insert>
+
+    <update id="updateById" parameterType="ScriptAnswer">
+        UPDATE script_answer
+        SET character_answer  = #{characterAnswer},
+            time_answer       = #{timeAnswer},
+            location_answer   = #{locationAnswer},
+            action_answer     = #{actionAnswer},
+            scoring_rule_json = #{scoringRuleJson}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

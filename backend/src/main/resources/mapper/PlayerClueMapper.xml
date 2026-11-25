@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.PlayerClueMapper">
+
+    <select id="selectByRoomAndUser" resultType="PlayerClue">
+        SELECT *
+        FROM player_clue
+        WHERE room_id = #{roomId}
+          AND user_id = #{userId}
+    </select>
+
+    <select id="countByRoomUserClue" resultType="long">
+        SELECT COUNT(*)
+        FROM player_clue
+        WHERE room_id = #{roomId}
+          AND user_id = #{userId}
+          AND clue_id = #{clueId}
+    </select>
+
+    <insert id="insert" parameterType="PlayerClue" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO player_clue (room_id, user_id, clue_id, is_read)
+        VALUES (#{roomId}, #{userId}, #{clueId}, #{isRead})
+    </insert>
+
+    <update id="markAllRead">
+        UPDATE player_clue
+        SET is_read = 1
+        WHERE room_id = #{roomId}
+          AND user_id = #{userId}
+          AND is_read = 0
+    </update>
+
+</mapper>

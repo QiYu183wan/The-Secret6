@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.ScriptStageMapper">
+
+    <select id="selectById" resultType="ScriptStage">
+        SELECT *
+        FROM script_stage
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByScriptId" resultType="ScriptStage">
+        SELECT *
+        FROM script_stage
+        WHERE script_id = #{scriptId}
+        ORDER BY stage_order ASC
+    </select>
+
+    <insert id="insert" parameterType="ScriptStage" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_stage (script_id, stage_name, stage_description, stage_order,
+                                  unlock_rule, timeout_minutes)
+        VALUES (#{scriptId}, #{stageName}, #{stageDescription}, #{stageOrder},
+                #{unlockRule}, #{timeoutMinutes})
+    </insert>
+
+    <update id="updateById" parameterType="ScriptStage">
+        UPDATE script_stage
+        SET stage_name        = #{stageName},
+            stage_description = #{stageDescription},
+            stage_order       = #{stageOrder},
+            unlock_rule       = #{unlockRule},
+            timeout_minutes   = #{timeoutMinutes}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE
+        FROM script_stage
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.GameRoomMapper">
+
+    <select id="selectById" resultType="GameRoom">
+        SELECT *
+        FROM game_room
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByIds" resultType="GameRoom">
+        SELECT *
+        FROM game_room
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectByScriptId" resultType="GameRoom">
+        SELECT *
+        FROM game_room
+        WHERE script_id = #{scriptId}
+    </select>
+
+    <select id="selectRecent" resultType="GameRoom">
+        SELECT *
+        FROM game_room
+        ORDER BY id DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="countByScriptId" resultType="long">
+        SELECT COUNT(*)
+        FROM game_room
+        WHERE script_id = #{scriptId}
+    </select>
+
+    <select id="countByScriptIdAndStatus" resultType="long">
+        SELECT COUNT(*)
+        FROM game_room
+        WHERE script_id = #{scriptId}
+          AND status = #{status}
+    </select>
+
+    <insert id="insert" parameterType="GameRoom" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO game_room (script_id, current_stage_id, status, start_time, finish_time)
+        VALUES (#{scriptId}, #{currentStageId}, #{status}, #{startTime}, #{finishTime})
+    </insert>
+
+    <update id="updateById" parameterType="GameRoom">
+        UPDATE game_room
+        SET current_stage_id = #{currentStageId},
+            status           = #{status},
+            start_time       = #{startTime},
+            finish_time      = #{finishTime}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

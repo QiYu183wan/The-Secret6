@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enigma.mapper.MatchmakingTicketMapper">
+
+    <select id="selectWaiting" resultType="MatchmakingTicket">
+        SELECT *
+        FROM matchmaking_ticket
+        WHERE user_id = #{userId}
+          AND script_id = #{scriptId}
+          AND status = 'WAITING'
+        LIMIT 1
+    </select>
+
+    <select id="selectMatched" resultType="MatchmakingTicket">
+        SELECT *
+        FROM matchmaking_ticket
+        WHERE user_id = #{userId}
+          AND script_id = #{scriptId}
+          AND status = 'MATCHED'
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectLatest" resultType="MatchmakingTicket">
+        SELECT *
+        FROM matchmaking_ticket
+        WHERE user_id = #{userId}
+          AND script_id = #{scriptId}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectWaitingList" resultType="MatchmakingTicket">
+        SELECT *
+        FROM matchmaking_ticket
+        WHERE script_id = #{scriptId}
+          AND status = 'WAITING'
+        ORDER BY create_time ASC, id ASC
+        LIMIT #{limit}
+    </select>
+
+    <select id="countWaiting" resultType="long">
+        SELECT COUNT(*)
+        FROM matchmaking_ticket
+        WHERE script_id = #{scriptId}
+          AND status = 'WAITING'
+    </select>
+
+    <insert id="insert" parameterType="MatchmakingTicket" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO matchmaking_ticket (user_id, script_id, status, matched_room_id)
+        VALUES (#{userId}, #{scriptId}, #{status}, #{matchedRoomId})
+    </insert>
+
+    <update id="updateById" parameterType="MatchmakingTicket">
+        UPDATE matchmaking_ticket
+        SET status          = #{status},
+            matched_room_id = #{matchedRoomId}
+        WHERE id = #{id}
+    </update>
+
+    <update id="markMatched">
+        UPDATE matchmaking_ticket
+        SET status          = 'MATCHED',
+            matched_room_id = #{roomId}
+        WHERE id = #{id}
+          AND status = 'WAITING'
+    </update>
+
+</mapper>
